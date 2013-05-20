@@ -7,6 +7,9 @@
 #   - update the custom variables below to fit your needs
 #   - create cron job to run on a schedule
 #
+# ref: 
+#   https://support.enterprise.github.com/entries/21160081-Backing-up-your-installation
+#
 # created: 2013.05.17 by jamujr
 # updated: 2013.05.17
 
