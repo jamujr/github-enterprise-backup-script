@@ -7,11 +7,33 @@
 #   - update the custom variables below to fit your needs
 #   - create cron job to run on a schedule
 #
+#
+# Note: 
+#   To use the Amazon S3 option you will need to install and configure
+#   the s3cmd utility.  For Ubuntu 12.04 the following is useful:
+#
+# - import signing key
+#   $ wget -O- -q http://s3tools.org/repo/deb-all/stable/s3tools.key | sudo apt-key add -
+#
+# - add repo to sources
+#   $ sudo wget -O/etc/apt/sources.list.d/s3tools.list http://s3tools.org/repo/deb-all/stable/s3tools.list
+# 
+# - refresh cache and install
+#   $ sudo apt-get update && sudo apt-get install s3cmd
+#
+# - configure s3cmd
+#   $ s3cmd --configure
+#
+# - Be sure to have your S3 bucket, access key, secret key, and encryption password ready!
+# - Use the Amazon portal to adjust the 'Lifecycle' rules as needed.
+#
 # ref: 
 #   https://support.enterprise.github.com/entries/21160081-Backing-up-your-installation
+#   http://s3tools.org/s3cmd
+#
 #
 # created: 2013.05.17 by jamujr
-# updated: 2013.05.17
+# updated: 2013.05.20
 
 
 # Custom variables
@@ -19,8 +41,15 @@
 SERVER="server.domain.com"                         # This is the name or ip of our server.
 GZNAME="github-enterprise-backup"                  # This is the name appended to the date for our zipped file.
 FL2KEP=8                                           # This is the number of files to keep in the BAKUPS folder.
-DIROUT="/media/backups/current/";                  # This is the directory where we output our backup files.
-BAKUPS="/media/backups/githubbackup";              # This is the directory where we package the outputted files.
+DIROUT="/backups/current/";                        # This is the directory where we output our backup files.
+BAKUPS="/backups/archive";                         # This is the directory where we package the outputted files.
+
+
+# Amazon S3 variables
+#
+USES3B=false;                                      # To enable Amazon S3 upload set to true. (must have s3cmd; see notes above)
+S3FLDR="s3://your-s3-bucket-name";                 # This is the Amazon S3 Bucket location for uploads.
+S3RSYC=false;                                      # To re-sync your entire 'BAKUPS' folder to S3 set to true.
 
 
 # Create our backup files
@@ -52,6 +81,21 @@ cd $BAKUPS
 for i in `ls -t * | tail -n+2`; do
 ls -t * | tail -n+$(($FL2KEP + 1)) | xargs rm -f
 done
+
+
+# Backup to Amazon S3
+#
+if $USES3B ; then
+   echo "4) Uploading to S3 Bucket"
+   case $BAKUPS in */) BAKUPS="$BAKUPS";; *) BAKUPS="$BAKUPS/";; esac   # ensure our path end with /
+   case $S3FLDR in */) S3FLDR="$S3FLDR";; *) S3FLDR="$S3FLDR/";; esac   # ensure our path end with /
+   if $S3RSYC ; then
+     s3cmd put --encrypt --recursive $BAKUPS $S3FLDR
+   else
+     s3cmd put --encrypt $BAKUPS$FILENAME $S3FLDR
+   fi
+fi
+
 
 # Exit our script
 #
