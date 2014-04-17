@@ -34,7 +34,7 @@
 #   to download files since they are encrypted!!
 #
 # ref:
-#   https://support.enterprise.github.com/entries/21160081-Backing-up-your-installation
+#   https://enterprise.github.com/help/articles/backing-up-enterprise-data
 #   http://s3tools.org/s3cmd
 #
 #
