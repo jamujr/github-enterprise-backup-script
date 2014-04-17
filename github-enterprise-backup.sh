@@ -44,20 +44,20 @@
 
 # Custom variables
 #
-SERVER="server.domain.com"                         # This is the name or ip of our server.
-GZNAME="github-enterprise-backup"                  # This is the name appended to the date for our zipped file.
-FL2KEP=8                                           # This is the number of files to keep in the BAKUPS folder.
-DIROUT="/backups/current/"                         # This is the directory where we output our backup files.
-BAKUPS="/backups/archive"                          # This is the directory where we package the outputted files.
-SLPTME=35                                          # This is the number of minutes to sleep while the export runs.
+SERVER=${SERVER:-"server.domain.com"}              # This is the name or ip of our server.
+GZNAME=${GZNAME:-"github-enterprise-backup"}       # This is the name appended to the date for our zipped file.
+FL2KEP=${FL2KEP:-8}                                # This is the number of files to keep in the BAKUPS folder.
+DIROUT=${DIROUT:-"/backups/current/"}              # This is the directory where we output our backup files.
+BAKUPS=${BAKUPS:-"/backups/archive"}               # This is the directory where we package the outputted files.
+SLPTME=${SLPTME:-35}                               # This is the number of minutes to sleep while the export runs.
 
 
 # Amazon S3 variables
 #
-USES3B=false                                       # To enable Amazon S3 upload set to true. (must have s3cmd; see notes above)
-S3FLDR="s3://your-s3-bucket-name"                  # This is the Amazon S3 Bucket location for uploads.
-UPFLDR="/backups/upload/"                          # This is the directory where we stage files before uploading.
-SPLTSZ=2                                           # This is the size in GB that we split files into before uploading.
+USES3B=${USES3B:-false}                            # To enable Amazon S3 upload set to true. (must have s3cmd; see notes above)
+S3FLDR=${S3FLDR:-"s3://your-s3-bucket-name"}       # This is the Amazon S3 Bucket location for uploads.
+UPFLDR=${UPFLDR:-"/backups/upload/"}               # This is the directory where we stage files before uploading.
+SPLTSZ=${SPLTSZ:-2}                                # This is the size in GB that we split files into before uploading.
 
 
 # Save our script path
