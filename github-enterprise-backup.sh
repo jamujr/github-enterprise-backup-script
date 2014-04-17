@@ -8,7 +8,7 @@
 #   - create cron job to run on a schedule
 #
 #
-# Note: 
+# Note:
 #   To use the Amazon S3 option you will need to install and configure
 #   the s3cmd utility.  For Ubuntu 12.04 the following is useful:
 #
@@ -17,7 +17,7 @@
 #
 # - add repo to sources
 #   $ sudo wget -O/etc/apt/sources.list.d/s3tools.list http://s3tools.org/repo/deb-all/stable/s3tools.list
-# 
+#
 # - refresh cache and install
 #   $ sudo apt-get update && sudo apt-get install s3cmd
 #
@@ -33,7 +33,7 @@
 #   Also please note that if using the s3cmd to upload files you will need to use the s3cmd
 #   to download files since they are encrypted!!
 #
-# ref: 
+# ref:
 #   https://support.enterprise.github.com/entries/21160081-Backing-up-your-installation
 #   http://s3tools.org/s3cmd
 #
@@ -125,4 +125,4 @@ rm -rf /tmp/*                          # clean up any left overs in tmp
 # Exit our script
 #
 echo "--done--"
-exit 0 
+exit 0
