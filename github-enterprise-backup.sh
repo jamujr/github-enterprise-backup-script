@@ -79,6 +79,7 @@ ssh "admin@"$SERVER "'ghe-export-redis'" > $DIROUT"backup-redis.rdb"
 ssh "admin@"$SERVER "'ghe-export-settings'" > $DIROUT"settings.json"
 ssh "admin@"$SERVER "'ghe-export-ssh-host-keys'" > $DIROUT"host-keys.tar"
 ssh "admin@"$SERVER "'ghe-export-repositories'" > $DIROUT"enterprise-repositories-backup.tar"
+ssh "admin@"$SERVER "'ghe-export-pages'" > $DIROUT"enterprise-pages-backup.tar"
 sleep $SLPTME"m"
 ssh "admin@"$SERVER "'ghe-maintenance -u'"
 
