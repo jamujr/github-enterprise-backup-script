@@ -8,7 +8,7 @@
 #   - create cron job to run on a schedule
 #
 #
-# Note: 
+# Note:
 #   To use the Amazon S3 option you will need to install and configure
 #   the s3cmd utility.  For Ubuntu 12.04 the following is useful:
 #
@@ -17,7 +17,7 @@
 #
 # - add repo to sources
 #   $ sudo wget -O/etc/apt/sources.list.d/s3tools.list http://s3tools.org/repo/deb-all/stable/s3tools.list
-# 
+#
 # - refresh cache and install
 #   $ sudo apt-get update && sudo apt-get install s3cmd
 #
@@ -33,8 +33,8 @@
 #   Also please note that if using the s3cmd to upload files you will need to use the s3cmd
 #   to download files since they are encrypted!!
 #
-# ref: 
-#   https://support.enterprise.github.com/entries/21160081-Backing-up-your-installation
+# ref:
+#   https://enterprise.github.com/help/articles/backing-up-enterprise-data
 #   http://s3tools.org/s3cmd
 #
 #
@@ -44,20 +44,20 @@
 
 # Custom variables
 #
-SERVER="server.domain.com"                         # This is the name or ip of our server.
-GZNAME="github-enterprise-backup"                  # This is the name appended to the date for our zipped file.
-FL2KEP=8                                           # This is the number of files to keep in the BAKUPS folder.
-DIROUT="/backups/current/"                         # This is the directory where we output our backup files.
-BAKUPS="/backups/archive"                          # This is the directory where we package the outputted files.
-SLPTME=35                                          # This is the number of minutes to sleep while the export runs.
+SERVER=${SERVER:-"server.domain.com"}              # This is the name or ip of our server.
+GZNAME=${GZNAME:-"github-enterprise-backup"}       # This is the name appended to the date for our zipped file.
+FL2KEP=${FL2KEP:-8}                                # This is the number of files to keep in the BAKUPS folder.
+DIROUT=${DIROUT:-"/backups/current/"}              # This is the directory where we output our backup files.
+BAKUPS=${BAKUPS:-"/backups/archive"}               # This is the directory where we package the outputted files.
+SLPTME=${SLPTME:-35}                               # This is the number of minutes to sleep while the export runs.
 
 
 # Amazon S3 variables
 #
-USES3B=false                                       # To enable Amazon S3 upload set to true. (must have s3cmd; see notes above)
-S3FLDR="s3://your-s3-bucket-name"                  # This is the Amazon S3 Bucket location for uploads.
-UPFLDR="/backups/upload/"                          # This is the directory where we stage files before uploading.
-SPLTSZ=2                                           # This is the size in GB that we split files into before uploading.
+USES3B=${USES3B:-false}                            # To enable Amazon S3 upload set to true. (must have s3cmd; see notes above)
+S3FLDR=${S3FLDR:-"s3://your-s3-bucket-name"}       # This is the Amazon S3 Bucket location for uploads.
+UPFLDR=${UPFLDR:-"/backups/upload/"}               # This is the directory where we stage files before uploading.
+SPLTSZ=${SPLTSZ:-2}                                # This is the size in GB that we split files into before uploading.
 
 
 # Save our script path
@@ -79,6 +79,7 @@ ssh "admin@"$SERVER "'ghe-export-redis'" > $DIROUT"backup-redis.rdb"
 ssh "admin@"$SERVER "'ghe-export-settings'" > $DIROUT"settings.json"
 ssh "admin@"$SERVER "'ghe-export-ssh-host-keys'" > $DIROUT"host-keys.tar"
 ssh "admin@"$SERVER "'ghe-export-repositories'" > $DIROUT"enterprise-repositories-backup.tar"
+ssh "admin@"$SERVER "'ghe-export-pages'" > $DIROUT"enterprise-pages-backup.tar"
 sleep $SLPTME"m"
 ssh "admin@"$SERVER "'ghe-maintenance -u'"
 
@@ -125,4 +126,4 @@ rm -rf /tmp/*                          # clean up any left overs in tmp
 # Exit our script
 #
 echo "--done--"
-exit 0 
+exit 0
